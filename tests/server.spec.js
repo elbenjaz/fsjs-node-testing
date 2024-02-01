@@ -19,7 +19,7 @@ describe("Coffee CRUD", () => {
     it("DELETE /cafes : returns code 404 with not found ID", async () => {
         const jwt = generateToken(); //"token"
 
-        const id_not_found = faker.string.alphanumeric(); //"not_found_id"
+        const id_not_found = faker.string.alpha(); //"not_found_id"
         const response = await request(server)
             .delete(`/cafes/${id_not_found}`)
             .set("Authorization", `Bearer: ${jwt}`)
@@ -29,7 +29,7 @@ describe("Coffee CRUD", () => {
     });
     
     it("POST /cafes : returns code 201", async () => {
-        const id = faker.string.alphanumeric(); //"new_coffee_id"
+        const id = faker.string.alpha(); //"new_coffee_id"
         const coffee =   {
             "id"     : id,
             "nombre" : faker.commerce.productName() //"New coffee"
@@ -44,7 +44,7 @@ describe("Coffee CRUD", () => {
     });
       
     it("PUT /cafes/:id : returns code 400 with mismatched IDs", async () => {
-        const id = faker.string.alphanumeric();//"new_coffee_id"
+        const id = faker.string.alpha();//"new_coffee_id"
         const coffee =   {
             "id"     : faker.string.numeric(), //"new_coffee_id2"
             "nombre" : faker.commerce.productName() //"New coffee"
