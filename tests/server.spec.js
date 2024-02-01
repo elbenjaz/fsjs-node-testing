@@ -1,5 +1,9 @@
 const request = require("supertest");
 const server = require("../index");
+const { faker } = require('@faker-js/faker');
+const { generateToken } = require('./utils/login.js');
+
+require('dotenv').config();
 
 describe("Coffee CRUD", () => {
     it("GET /cafes : returns code 200 and array with min 1 object", async () => {
@@ -13,11 +17,11 @@ describe("Coffee CRUD", () => {
     });
 
     it("DELETE /cafes : returns code 404 with not found ID", async () => {
-        const jwt = "token";
+        const jwt = generateToken(); //"token"
 
-        const id = "not_found_id";
+        const id_not_found = faker.string.alphanumeric(); //"not_found_id"
         const response = await request(server)
-            .delete(`/cafes/${id}`)
+            .delete(`/cafes/${id_not_found}`)
             .set("Authorization", `Bearer: ${jwt}`)
             .send();
 
@@ -25,10 +29,10 @@ describe("Coffee CRUD", () => {
     });
     
     it("POST /cafes : returns code 201", async () => {
-        const id = "new_coffee_id";
+        const id = faker.string.alphanumeric(); //"new_coffee_id"
         const coffee =   {
             "id"     : id,
-            "nombre" : "New coffee"
+            "nombre" : faker.commerce.productName() //"New coffee"
         };
         
         const response = await request(server)
@@ -40,10 +44,10 @@ describe("Coffee CRUD", () => {
     });
       
     it("PUT /cafes/:id : returns code 400 with mismatched IDs", async () => {
-        const id = "new_coffee_id";
+        const id = faker.string.alphanumeric();//"new_coffee_id"
         const coffee =   {
-            "id"     : "new_coffee_id2",
-            "nombre" : "New coffee"
+            "id"     : faker.string.numeric(), //"new_coffee_id2"
+            "nombre" : faker.commerce.productName() //"New coffee"
         };
 
         const response = await request(server)
